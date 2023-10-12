@@ -101,16 +101,38 @@ def test_sample_batch_different_seed_different_values():
     assert values != different_values
 
 
-def test_contains():
-    n = 10
-    space = Discrete(n, rng_seed=123)
+def test_foo():
+    assert 1 in Discrete(10)
+    assert 0 in Discrete(10)
 
-    assert 3 in space
-    assert 3.12 not in space
-    assert 10 not in space
-    assert 0 in space
-    assert 123 not in space
-    assert "bob" not in space
+
+@pytest.mark.parametrize(
+    ("start", "n", "v", "expected"),
+    [
+        (None, 10, 0, True),
+        (None, 10, 1, True),
+        (None, 10, 10, False),
+        (None, 10, 0.2, False),
+        (None, 10, "bob", False),
+        (None, 1, 0, True),
+        (0, 10, 0, True),
+        (0, 10, 1, True),
+        (0, 10, 10, False),
+        (0, 10, 0.2, False),
+        (0, 10, "bob", False),
+        (0, 1, 0, True),
+        (-10, 10, -10, True),
+        (-10, 10, -5, True),
+        (-10, 10, 9, True),
+        (-10, 10, 10, False),
+        (-10, 10, 0.2, False),
+        (-10, 10, "bob", False),
+        (-10, 1, 0, True),
+    ],
+)
+def test_contains(start: int | None, n: int, v: int, expected: bool):
+    space = Discrete(start=start, n=n, rng_seed=123)
+    assert (v in space) == expected, (space, v, v in space, expected)
 
 
 def test_repr():
@@ -121,9 +143,40 @@ def test_discrete_with_start():
     n_values = 100
     n = 10
     start = 2
-    space = Discrete(n, rng_seed=123, start=start)
+    space = Discrete(
+        start=start,
+        n=n,
+        rng_seed=123,
+    )
     for values in [
         space.sample_batch(n_values),
         [space.sample() for _ in range(n_values)],
     ]:
         assert all(start <= v <= n for v in values)
+
+
+def test_repr_with_start():
+    assert str(Discrete(n=10, start=2)) == "Discrete(start=2, n=10)"
+
+
+@pytest.mark.xfail(reason="Not sure if we want to support the `dtype` param as in gym.")
+def test_discrete_with_numpy_types():
+    import numpy as np
+
+    dtype = np.int16
+
+    n_values = 100
+    n = np.array([10]).item()
+    n: dtype = dtype(10)
+    start: dtype = dtype(2)
+    space: Discrete[dtype] = Discrete(
+        start=start,
+        n=n,
+        rng_seed=123,
+    )
+    for values in [
+        space.sample_batch(n_values),
+        [space.sample() for _ in range(n_values)],
+    ]:
+        assert all(start <= v <= n for v in values)
+        assert all(isinstance(v, dtype) for v in values)
