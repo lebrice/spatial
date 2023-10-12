@@ -25,7 +25,7 @@ Having fun with spaces
 
 
 * Free software: MIT License
-* Documentation: https://spatial.readthedocs.io.
+.. * Documentation: https://spatial.readthedocs.io.
 
 
 Features
