@@ -1,16 +1,16 @@
 [package]
 authors = ["Fabrice Normandin <normandf@mila.quebec>"]
-name = "spatial"
+name = "spatial_lib"
 version = "0.0.1"
 description = "Having fun with spaces"
-readme = "README.rst"
+readme = "../README.rst"
 edition = "2018"
 
 # [package.metadata.maturin.scripts]
 
 [package.metadata.maturin]
 # requires-dist = []
-# requires-python = ">=3.6"
+# requires-python = ">=3.12"
 # classifier = [
 #     'Development Status :: 2 - Pre-Alpha',
 #     'Intended Audience :: Developers',
@@ -26,5 +26,5 @@ pyo3 = { git = "https://github.com/PyO3/pyo3", features = ["extension-module"] }
 rand = "0.8.5"
 
 [lib]
-name = "spatial"
+name = "spatial_lib"
 crate-type = ["cdylib"]

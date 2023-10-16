@@ -3,7 +3,6 @@ use rand::prelude::Distribution;
 use rand::Rng;
 use rand::SeedableRng;
 use std::any::Any;
-use pyo3::types;
 use std::convert::TryInto;
 
 trait Space<T> {
@@ -35,12 +34,12 @@ impl Discrete {
     }
     fn sample(&mut self) -> usize {
         // sample a random value of type T in the range [0, self.n]
-        return self._sample()
+        return self._sample();
         // return rand::random::<u32>() % self.n;
     }
     fn sample_batch(&mut self, n: usize) -> Vec<usize> {
         // sample a random value of type T in the range [0, self.n]
-        return self._sample_batch(n)
+        return self._sample_batch(n);
     }
 
     fn contains(&self, value: isize) -> bool {
@@ -52,7 +51,9 @@ impl Discrete {
         // }
         // return value.downcast::<pyo3::types::PyInt>().is_ok_and(|x| 0 <= x && x < self.n);
 
-        return value.downcast::<pyo3::types::PyInt>().is_ok_and(|x| self._contains(x));
+        return value
+            .downcast::<pyo3::types::PyInt>()
+            .is_ok_and(|x| self._contains(x));
         // let is_contained = match option {
         //     Ok(v) => self._contains(&v),
         //     Err(_) => false,
@@ -97,7 +98,7 @@ impl Space<usize> for Discrete {
 }
 
 #[pymodule]
-fn spatial(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+fn spatial_lib(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     // m.add_wrapped(Discrete);
     // m.add_wrapped(wrap_pyfunction!(get_42))?;
     // m.add_class::<Space>()?;

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 import typing
-from typing import Any, TypeVar, overload
+from typing import Any, overload
 
-from typing_extensions import TypeVar
-
-from .space import Space
-from .spatial import Discrete as _Discrete
+from spatial.space import Space
+from spatial.spatial_lib import Discrete as _Discrete
 
 if typing.TYPE_CHECKING:
     from .space import PositiveInt
