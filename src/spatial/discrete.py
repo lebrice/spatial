@@ -13,13 +13,13 @@ if typing.TYPE_CHECKING:
 __all__ = ["Discrete"]
 
 
-class Discrete[I: int](Space[I]):
+class Discrete(Space[int]):
     @overload
     def __init__(
         self,
         *,
-        start: I,
-        n: I,
+        start: int,
+        n: int,
         rng_seed: int | None = None,
     ):
         ...
@@ -36,9 +36,9 @@ class Discrete[I: int](Space[I]):
 
     def __init__(
         self,
-        n: I | PositiveInt,
+        n: int,
         *,
-        start: I | None = None,
+        start: int | None = None,
         rng_seed: int | None = None,
     ):
         super().__init__()
@@ -50,7 +50,7 @@ class Discrete[I: int](Space[I]):
             self.n - self.start if self.start is not None else self.n, rng_seed=rng_seed
         )
 
-    def sample(self) -> I:
+    def sample(self) -> int:
         if self.start is None:
             return self._discrete.sample()
         return self.start + self._discrete.sample()
